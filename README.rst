@@ -5,24 +5,20 @@ Description:  Python wrapper and package for Bot Framework REST API and State RE
 
 A snippet of a basic bot:
 
-```python
-from pybotframework.botframework import BotFramework
-from pybotframework.regex_connector import RegexConnector
+.. code-block:: ruby
+    from pybotframework.botframework import BotFramework
+    from pybotframework.regex_connector import RegexConnector
 
-# Instatiate the connector to custom logic
-regex_conn = RegexConnector(intent_file='regex.json', response_file='responses.json')
+    # Instatiate the connector to custom logic
+    regex_conn = RegexConnector(intent_file='regex.json', response_file='responses.json')
 
-# Instatiate the bot
-my_app = BotFramework(connectors=[regex_conn])
+    # Instatiate the bot
+    my_app = BotFramework(connectors=[regex_conn])
 
-# Run flask app on port specified here
-if __name__ == '__main__':
-    my_app.run_server(host='localhost', port=3978, debug=True)
-```
+    # Run flask app on port specified here
+    if __name__ == '__main__':
+        my_app.run_server(host='localhost', port=3978, debug=True)
 
-Notes on how the example bot works with this package currently (in fact it doesn't use this package at the moment), however it does use the following tools:
-
-.. _Flask: http://flask.pocoo.org/
 
 See the README in the examples folder for running a test bot.
 
@@ -83,3 +79,11 @@ http://localhost:3978/api/messages
 
 You should see the messages "User added!" and "Bot added!"
 This means that you are set up!
+
+
+Links
+========
+
+Link to Flask project:
+
+.. _Flask: http://flask.pocoo.org/
