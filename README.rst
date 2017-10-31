@@ -5,7 +5,8 @@ Description:  Python wrapper and package for Bot Framework REST API and State RE
 
 A snippet of a basic bot:
 
-.. code-block:: ruby
+.. code-block:: python
+
     from pybotframework.botframework import BotFramework
     from pybotframework.regex_connector import RegexConnector
 
@@ -58,7 +59,7 @@ Make sure to go through the "Install and configure ngrok" settings.
 Uncheck the "Bypass ngrok for local addresses" to enable the bot to
 talk with Docker.
 
-Now build thedocker image.
+Now build the docker image on the command line.
 
     cd <pybotframework base directory>
 
@@ -74,7 +75,7 @@ Search for your docker "Image ID" in the list
 
 You should see your container ID running.
 
-Now try to connect to the bot by entering the address:
+Now try to connect to the bot by entering the address in the Emulator:
 http://localhost:3978/api/messages
 
 You should see the messages "User added!" and "Bot added!"
@@ -86,4 +87,4 @@ Links
 
 Link to Flask project:
 
-.. _Flask: http://flask.pocoo.org/
+    .. _Flask: http://flask.pocoo.org/
