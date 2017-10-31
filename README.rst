@@ -1,25 +1,25 @@
 Python Bot Framework Wrapper
 --------
 
-Description:  Python wrapper/package for Bot Framework REST API and State REST API (package in initial phases)
+Description:  Python wrapper and package for Bot Framework REST API and State REST API (not production ready, yet).
 
-To use (this will do more soon), simply do::
+A snippet of a basic bot:
 
-    >>> import pybotframework
+.. code-block:: python
 
-Notes on how the example bot works with this package currently (in fact it doesn't use this package at the moment), however it does use the following tools:
+    from pybotframework.botframework import BotFramework
+    from pybotframework.regex_connector import RegexConnector
 
-Redis_ is used here as an in-memory data structure store and message broker.
+    # Instatiate the connector to custom logic
+    regex_conn = RegexConnector(intent_file='regex.json', response_file='responses.json')
 
-.. _Redis: https://redis.io/
+    # Instatiate the bot
+    my_app = BotFramework(connectors=[regex_conn])
 
-Celery_ is used for asynchronous task queues and scheduling in combination with flask.
+    # Run flask app on port specified here
+    if __name__ == '__main__':
+        my_app.run_server(host='localhost', port=3978, debug=True)
 
-.. _Celery: http://www.celeryproject.org/
-
-Flask_ is the web app framework used here for message routing and where all of the bot logic is written.
-
-.. _Flask: http://flask.pocoo.org/
 
 See the README in the examples folder for running a test bot.
 
@@ -33,10 +33,10 @@ Requirements
 * Pybotframework library installed from repo (python setup.py) and repo downloaded for tutorials https://github.com/michhar/pybotframework - link will be live 10/26
 * Azure subscription if you wish to deploy (optional) https://azure.microsoft.com/en-us/free/
 * Either Docker and Ngrok or a C/C++ compiler:
-** Docker (if macOS get https://docs.docker.com/docker-for-mac/install/ and if Windows get https://docs.docker.com/docker-for-windows/install/)
-** Ngrok https://ngrok.com/download
-** C/C++ compiler (gcc/g++) for TensorFlow bot (Windows http://mingw-w64.org/doku.php/download/mingw-builds, Mac type ‘g++’ in the terminal and follow instructions)
-** Some knowledge of ML and neural nets (optional)
+* Docker (if macOS get https://docs.docker.com/docker-for-mac/install/ and if Windows get https://docs.docker.com/docker-for-windows/install/)
+* Ngrok https://ngrok.com/download
+* C/C++ compiler (gcc/g++) for TensorFlow bot (Windows http://mingw-w64.org/doku.php/download/mingw-builds, Mac type ‘g++’ in the terminal and follow instructions)
+* Some knowledge of ML and neural nets (optional)
 
 
 
@@ -59,21 +59,32 @@ Make sure to go through the "Install and configure ngrok" settings.
 Uncheck the "Bypass ngrok for local addresses" to enable the bot to
 talk with Docker.
 
-Now build thedocker image.
+Now build the docker image on the command line.
 
-    cd <pybotframework directory>
+    cd <pybotframework base directory>
+
     docker build .
+
     docker images
     
 Search for your docker "Image ID" in the list
 
     docker run -p 3978:3978 -id <image ID> python
+
     docker ps
 
 You should see your container ID running.
 
-Now try to connect to the bot by entering the address:
+Now try to connect to the bot by entering the address in the Emulator:
 http://localhost:3978/api/messages
 
 You should see the messages "User added!" and "Bot added!"
 This means that you are set up!
+
+
+Links
+========
+
+Link to Flask project:
+
+    .. _Flask: http://flask.pocoo.org/
