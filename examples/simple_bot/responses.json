@@ -1,0 +1,4 @@
+{"name": {"messages": ["Hi User"]},
+ "hello": {"messages": ["My name is PythonBot", "What is your name?"]},
+ "bye":{"messages": ["Nice chatting with you! Goodbye."]}
+}

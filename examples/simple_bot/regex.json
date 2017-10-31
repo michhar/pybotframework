@@ -1,0 +1,9 @@
+[{"pattern": "hi|hello|howdy",
+  "intent": "hello"},
+ {"pattern": "name",
+  "intent": "name"},
+ {"pattern": "sayonara|bye",
+  "intent": "bye"},
+ {"pattern": "help|halp",
+  "intent": "help"}
+]
