@@ -1,18 +1,16 @@
 import numpy as np
 import os
 import tensorflow as tf
-import pybotframework.word2vec.word2vec_optimized as word2vec_optimized
-from pybotframework.word2vec.word2vec_optimized import Options, Word2Vec, FLAGS
+import examples.tf_bot.word2vec.word2vec_optimized as word2vec_optimized
+from examples.tf_bot.word2vec.word2vec_optimized import Options, Word2Vec, FLAGS
 from pybotframework.connector import Connector
 
 
 # Define TensorFlow flags
-# FLAGS.save_path = '.'  # Save model to the current path
-FLAGS.save_path = os.getcwd()  # Save model to the current path
-FLAGS.train_data = '/'.join(os.getcwd().split('/')[0:-1]) + '/data/text8_trimmed.txt'  # Dataset to
-#  train the model
-FLAGS.eval_data = '/'.join(os.getcwd().split('/')[0:-1]) + '/data/questions-words.txt'  # A list of analogies to
-# test the model
+REPO_PATH = '/'.join(os.getcwd().split('/')[0:-2])
+FLAGS.save_path = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # Save model to the data directory in tf_bot
+FLAGS.train_data = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # Dataset to train the model
+FLAGS.eval_data = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # A list of analogies to test the model
 
 
 class Word2VecWrapper(Word2Vec):
@@ -41,27 +39,25 @@ class TensorFlowConnector(Connector):
     def __init__(self, model_file):
         Connector.__init__(self)
         self.model = os.path.join(FLAGS.save_path, model_file)
-        # self.sess = None
-        self.sess = tf.Session()
+        self.sess = None
+        # self.sess = tf.Session()
         self.loaded_model = None
-        self.word2vec = tf.load_op_library(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                                        'word2vec/word2vec_ops.so'))
-        self._load_model()
+        self.word2vec = tf.load_op_library(os.path.join(REPO_PATH, 'examples/tf_bot/data/word2vec_ops.so'))
+        # self._load_model()
 
-    def _load_model(self):
+    """
+    Function to load TensorFlow model outside of _process() method
+    
+        def _load_model(self):
         # Load hyperparameters, etc., from the Options class
         opts = Options()
         word2vec_optimized.word2vec = self.word2vec
-        # with tf.Graph().as_default(), tf.Session() as self.sess:
         tf.global_variables_initializer().run(session=self.sess)
         # Load word2vec model
         self.loaded_model = Word2VecWrapper(opts, self.sess)
         self.loaded_model.saver.restore(self.sess, self.model)
-        # with tf.Graph().as_default(), tf.Session() as self.sess:
-        #     tf.global_variables_initializer().run()
-        #     # Load word2vec model
-        #     self.loaded_model = Word2VecWrapper(opts, self.sess)
-        #     self.loaded_model.saver.restore(self.sess, self.model)
+    
+    """
 
     def _preprocess(self, message):
         """
@@ -93,11 +89,24 @@ class TensorFlowConnector(Connector):
         w1 = message[1]
         w2 = message[2]
 
-        # with tf.Graph().as_default(), tf.Session() as self.sess:
-        #     prediction = self.loaded_model.analogy(w0, w1, w2)
-        prediction = self.loaded_model.analogy(w0, w1, w2)
+        # TODO: Resolve issue on how TensorFlow model is loaded.
+        """
+        Code to load TensorFlow model and create a prediction.
+        
+        opts = Options()
+        # word2vec_optimized.word2vec = self.word2vec
+        with tf.Graph().as_default(), tf.Session() as self.sess:
+            with tf.device("/cpu:0"):
+                tf.global_variables_initializer().run()
+                self.loaded_model = Word2VecWrapper(opts, self.sess)
+                prediction = self.loaded_model.analogy(w0, w1, w2)
         self.sess.close()
-        return prediction
+        
+        return prediction        
+        
+        """
+
+        return '<my_prediction>'
 
     def _postprocess(self, prediction):
         """
