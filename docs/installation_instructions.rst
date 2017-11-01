@@ -22,6 +22,17 @@ for Linux.
 
 word2vec_ops.so
 ###############
+The C files to create this ops file are part of a zipped file in the Microsoft Azure portal.
+
+1. If you haven't done so already, clone the pybotframework repo.
+
+2. Download the zipped file from `here <https://odsc2017.blob.core.windows.net/models/tensorflow_tutorial_data.zip>`_
+
+3. Unzip the file and place the contents in `pybotframework/examples/tf_bot/data` in the cloned repo.
+
+4. Enter this `data` directory and proceed with the following steps.
+
+
 Before executing these commands, make sure that TensorFlow has been installed on your system.::
 
     `TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')`
@@ -33,7 +44,8 @@ On a Mac, add `-undefined dynamic_lookup` to the g++ command.
 After running these commands, the file `word2vec_ops.so` will be created. This file needs to be placed in the
 `pybotframework/word2vec/` directory in order to be able to run the tf_bot sample bot.
 
-Once this ops file has been created, it need to be moved into your installation of pybotframework.
+
+Once this ops file has been created, it needs to be moved into your installation of pybotframework.
 
 1. Open a terminal and start python::
 
