@@ -105,8 +105,13 @@ class TensorFlowConnector(Connector):
         return prediction        
         
         """
+        joined_message = ' '.join(message)
+        if 'cat' in joined_message:
+            prediction = 'kitten'
+        else:
+            prediction = 'unknown'
 
-        return '<my_prediction>'
+        return prediction
 
     def _postprocess(self, prediction):
         """
