@@ -32,3 +32,18 @@ On a Mac, add `-undefined dynamic_lookup` to the g++ command.
 
 After running these commands, the file `word2vec_ops.so` will be created. This file needs to be placed in the
 `pybotframework/word2vec/` directory in order to be able to run the tf_bot sample bot.
+
+Once this ops file has been created, it need to be moved into your installation of pybotframework.
+
+1. Open a terminal and start python::
+
+    `> python`
+2. In path, load the pybotframework package::
+
+    `> import pybotframework`
+3. Retrieve the location of the package::
+
+    `> pybotframework.__path__`
+
+4. In the pybotframework-0.1-py3.5.egg directory, there is an `examples/tf_bot/word2vec` directory. Copy
+`word2vec_ops.so` into that directory.
