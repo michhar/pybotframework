@@ -8,17 +8,22 @@ A snippet of a basic bot:
 .. code-block:: python
 
     from pybotframework.botframework import BotFramework
-    from pybotframework.regex_connector import RegexConnector
+    from pybotframework.sklearn_connector import SklearnConnector
 
-    # Instatiate the connector to custom logic
-    regex_conn = RegexConnector(intent_file='regex.json', response_file='responses.json')
+    # Labels for ML model
+    target_names = ['neg', 'pos']
+
+    # Instatiate the connector to custom ML model
+    sklearn_lang_conn = SklearnConnector(model_file='sentiment.pkl',
+                                         target_names=target_names)
 
     # Instatiate the bot
-    my_app = BotFramework(connectors=[regex_conn])
+    my_app = BotFramework(connectors=[sklearn_lang_conn])
 
-    # Run flask app on port specified here
     if __name__ == '__main__':
-        my_app.run_server(host='localhost', port=3978, debug=True)
+        """Run the Flask app"""
+        my_app.run_server(host='0.0.0.0', port=3978, debug=True)
+
 
 
 See the README in the examples folder for running a test bot.
