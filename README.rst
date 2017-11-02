@@ -53,8 +53,11 @@ Requirements for Examples
 
 You will also need the following models and data:
 
-* Sentiment scikit-learn model - to download click here: [https://odsc2017.blob.core.windows.net/models/sentiment.pkl](https://odsc2017.blob.core.windows.net/models/sentiment.pkl)
-* TensorFlow word2vec model - to download click here: [https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip](https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip)
+* `Scikit-learn sentiment model`_ (click to download)
+    .. _`Scikit-learn sentiment model`: https://odsc2017.blob.core.windows.net/models/sentiment.pkl
+
+* `TensorFlow word2vec model`_ (click to download)
+    .. _`TensorFlow word2vec model`: https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip
 
 Docker Instructions
 ========
