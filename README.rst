@@ -28,20 +28,29 @@ A snippet of a basic bot:
 
 See the README in the examples folder for running a test bot.
 
-Requirements
+Installation
+============
+
+Install the pybotframework package from this repository with
+
+    `pip install .`
+
+or
+
+    `python setup.py`
+
+
+
+Requirements for Examples
 ==========================
 
 * Bot Framework Emulator https://github.com/Microsoft/BotFramework-Emulator
 * Python installed (Anaconda 3.5 recommended) https://anaconda.org/
 * Python experience https://docs.python.org/3/tutorial
-* Python packages (check requirements.txt file on pybotframework repo for these)
-* Pybotframework library installed from repo (python setup.py) and repo downloaded for tutorials https://github.com/michhar/pybotframework - link will be live 10/26
-* Azure subscription if you wish to deploy (optional) https://azure.microsoft.com/en-us/free/
-* Either Docker and Ngrok or a C/C++ compiler:
+* Pybotframework library installed from repo (`python setup.py` or `pip install .`)
 * Docker (if macOS get https://docs.docker.com/docker-for-mac/install/ and if Windows get https://docs.docker.com/docker-for-windows/install/)
 * Ngrok https://ngrok.com/download
-* C/C++ compiler (gcc/g++) for TensorFlow bot (Windows http://mingw-w64.org/doku.php/download/mingw-builds, Mac type ‘g++’ in the terminal and follow instructions)
-* Some knowledge of ML and neural nets (optional)
+* Some knowledge of ML and neural nets (helpful)
 
 
 
