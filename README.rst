@@ -100,5 +100,4 @@ Links
 ========
 
 Link to Flask project:
-
     .. _Flask: http://flask.pocoo.org/
