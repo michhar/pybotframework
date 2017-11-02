@@ -90,28 +90,26 @@ class TensorFlowConnector(Connector):
         w2 = message[2]
 
         # TODO: Resolve issue on how TensorFlow model is loaded.
-        """
-        Code to load TensorFlow model and create a prediction.
         
         opts = Options()
         # word2vec_optimized.word2vec = self.word2vec
-        with tf.Graph().as_default(), tf.Session() as self.sess:
+        with tf.Graph().as_default(), tf.Session(graph=tf.Graph()) as self.sess:
             with tf.device("/cpu:0"):
-                tf.global_variables_initializer().run()
+                # init = tf.global_variables_initializer()
+                saver = tf.train.Saver()
+                saver.restore(self.sess, self.model)
                 self.loaded_model = Word2VecWrapper(opts, self.sess)
                 prediction = self.loaded_model.analogy(w0, w1, w2)
-        self.sess.close()
         
         return prediction        
-        
-        """
-        joined_message = ' '.join(message)
-        if 'cat' in joined_message:
-            prediction = 'kitten'
-        else:
-            prediction = 'unknown'
 
-        return prediction
+        # joined_message = ' '.join(message)
+        # if 'cat' in joined_message:
+        #     prediction = 'kitten'
+        # else:
+        #     prediction = 'unknown'
+        #
+        # return prediction
 
     def _postprocess(self, prediction):
         """
