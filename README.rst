@@ -99,6 +99,5 @@ Links
 * Flask_ project
     .. _Flask: http://flask.pocoo.org/
 
-* `Microsoft Bot Framework`__
-    .._BF: https://dev.botframework.com/
-    __ BF_
+* `Microsoft Bot Framework`_
+    .. _`Microsoft Bot Framework`: https://dev.botframework.com/
