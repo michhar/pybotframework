@@ -48,7 +48,7 @@ Requirements for Examples
 * Pybotframework library installed from repo (`python setup.py` or `pip install .`)
 * Docker (if macOS get https://docs.docker.com/docker-for-mac/install/ and if Windows get https://docs.docker.com/docker-for-windows/install/)
 * Ngrok https://ngrok.com/download
-* TensorFlow and Scikit-learn installed
+* TensorFlow (tensorflow==1.3.0) and Scikit-learn (scikit-learn==0.18.2) installed
 * Some knowledge of ML and neural nets (helpful)
 
 You will also need the following models and data:
