@@ -33,13 +33,11 @@ Installation
 
 Install the pybotframework package from this repository with
 
-    `pip install .`
+:code:`pip install .`
 
 or
 
-    `python setup.py`
-
-
+:code:`python setup.py`
 
 Requirements for Examples
 ==========================
@@ -58,38 +56,33 @@ You will also need the following models and data:
 * Sentiment scikit-learn model - to download click here: [https://odsc2017.blob.core.windows.net/models/sentiment.pkl](https://odsc2017.blob.core.windows.net/models/sentiment.pkl)
 * TensorFlow word2vec model - to download click here: [https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip](https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip)
 
-Docker
+Docker Instructions
 ========
-To build and run the Docker image, first download and install Docker.
+
+To build and run the Docker image ensure you have Docker running.
 https://docs.docker.com/engine/installation/
-
-Make sure Docker is up and running.
-
-Next, download and install ngrok.
-
-https://ngrok.com/
 
 Then set up the botframework emulator.
 
 https://docs.microsoft.com/en-us/bot-framework/debug-bots-emulator
 
-Make sure to go through the "Install and configure ngrok" settings.
+Make sure to go through the "Install and configure ngrok" settings (ensure you have ngrok installed - see Requirements above).
 Uncheck the "Bypass ngrok for local addresses" to enable the bot to
 talk with Docker.
 
-Now build the docker image on the command line.
+Now build the Docker image on the command line.
 
-    cd <pybotframework base directory>
+:code:`cd <pybotframework base directory>`
 
-    docker build .
+:code:`docker build .`
 
-    docker images
+:code:`docker images`
     
-Search for your docker "Image ID" in the list
+Search for your Docker "Image ID" in the list
 
-    docker run -p 3978:3978 -id <image ID> python
+:code:`docker run -p 3978:3978 -id <image ID> python`
 
-    docker ps
+:code:`docker ps`
 
 You should see your container ID running.
 
@@ -103,5 +96,9 @@ This means that you are set up!
 Links
 ========
 
-Link to Flask project:
+* Flask_ project
     .. _Flask: http://flask.pocoo.org/
+
+* `Microsoft Bot Framework`__
+    .._BF: https://dev.botframework.com/
+    __ BF_
