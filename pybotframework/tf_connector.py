@@ -1,70 +1,110 @@
+import collections
 import numpy as np
 import os
 import tensorflow as tf
-import examples.tf_bot.word2vec.word2vec_optimized as word2vec_optimized
-from examples.tf_bot.word2vec.word2vec_optimized import Options, Word2Vec, FLAGS
+import urllib.request
+import zipfile
 from pybotframework.connector import Connector
-
-
-# Define TensorFlow flags
-REPO_PATH = '/'.join(os.getcwd().split('/')[0:-2])
-FLAGS.save_path = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # Save model to the data directory in tf_bot
-FLAGS.train_data = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # Dataset to train the model
-FLAGS.eval_data = os.path.join(REPO_PATH, 'examples/tf_bot/data')  # A list of analogies to test the model
-
-
-class Word2VecWrapper(Word2Vec):
-
-    def __init__(self, options, session):
-        Word2Vec.__init__(self, options, session)
-
-    def analogy(self, w0, w1, w2):
-        """Predict word w3 as in w0:w1 vs w2:w3."""
-        wid = np.array([[self._word2id.get(w, 0) for w in [w0, w1, w2]]])
-        idx = self._predict(wid)
-        for c in [self._id2word[i] for i in idx[0, :]]:
-            if c not in [w0, w1, w2]:
-                return c
-        return 'unknown'
 
 
 class TensorFlowConnector(Connector):
     """
     TensorFlow connector. This connector uses the Word2Vec model (Mikolov et al.) to predict analogies. The Word2Vec
-    model creates word embeddings, which is a way of representing relationships between words using vectors. This
-    makes is useful as a tool to predict analogies between words. For examples, a) wife it to b) husband as c) queen
-    is to d) ???. In this case, the Word2Vec model would predict king for d).
+    model creates word embeddings, which is a way of representing relationships between words using vectors. Using
+    the model, the TensorFlowConnector predicts words that are similar to a given word.
     """
 
     def __init__(self, model_file):
         Connector.__init__(self)
-        self.model = os.path.join(FLAGS.save_path, model_file)
+        self.model_path = '/'.join(os.getcwd().split('/')[0:-2])+'/examples/tf_bot/data'
+        if len(os.getcwd().split('/')) == 1:
+            self.model_path = '\''.join(os.getcwd().split('\'')[0:-2]) + '/examples/tf_bot/data'
+        self.model = os.path.join(self.model_path, model_file)
         self.sess = None
-        # self.sess = tf.Session()
-        self.loaded_model = None
-        self.word2vec = tf.load_op_library(os.path.join(REPO_PATH, 'examples/tf_bot/data/word2vec_ops.so'))
-        # self._load_model()
+        self.graph = tf.Graph()
+        self.vocab_size = 10000
+        self.valid_examples = np.arange(self.vocab_size)
+        self.valid_window = 100
+        self.batch_size = 128
+        self.embedding_size = 128
 
-    """
-    Function to load TensorFlow model outside of _process() method
-    
-        def _load_model(self):
-        # Load hyperparameters, etc., from the Options class
-        opts = Options()
-        word2vec_optimized.word2vec = self.word2vec
-        tf.global_variables_initializer().run(session=self.sess)
-        # Load word2vec model
-        self.loaded_model = Word2VecWrapper(opts, self.sess)
-        self.loaded_model.saver.restore(self.sess, self.model)
-    
-    """
+    def read_data(self, filename):
+        """
+        Extract the first file enclosed in a zip file as a list of words.
+
+        :param: filename: str: Name of the zipped file used for training.
+        :returns: list
+        """
+        with zipfile.ZipFile(filename) as f:
+            data = tf.compat.as_str(f.read(f.namelist()[0])).split()
+
+        return data
+
+    def maybe_download(self, filename, url, expected_bytes):
+        """
+        Download a file if not present, and make sure it's the right size.
+
+        :param: filename: str: Name of the zipped file used for training.
+        :param: url: str: URL address for zipped file.
+        :param: expected_bytes: int: Number of expected bytes in the file
+        :returns: str
+        """
+        if not os.path.exists(filename):
+            filename, _ = urllib.request.urlretrieve(url + filename, filename)
+        statinfo = os.stat(filename)
+        if statinfo.st_size == expected_bytes:
+            pass
+        else:
+            raise Exception(
+                'Failed to verify ' + filename + '. Can you get to it with a browser?')
+        return filename
+
+    def build_dataset(self, words, n_words):
+        """
+        Process raw inputs into a dataset.
+
+        :param: words: Data extracted from zipped, text file used for training.
+        :param:  n_words: int: Number of words to train on.
+        :returns: list, int, dict, dict
+        """
+        count = [['UNK', -1]]
+        count.extend(collections.Counter(words).most_common(n_words - 1))
+        dictionary = dict()
+        for word, _ in count:
+            dictionary[word] = len(dictionary)
+        data = list()
+        unk_count = 0
+        for word in words:
+            if word in dictionary:
+                index = dictionary[word]
+            else:
+                index = 0  # dictionary['UNK']
+                unk_count += 1
+            data.append(index)
+        count[0][1] = unk_count
+        reversed_dictionary = dict(zip(dictionary.values(), dictionary.keys()))
+        return data, count, dictionary, reversed_dictionary
+
+    def collect_data(self, vocabulary_size=10000):
+        """
+        Read data and create the dictionary
+
+        :param: vocabulary_size: int: Number of words to train on.
+        :returns: list, int, dict, dict
+        """
+        url = 'http://mattmahoney.net/dc/'
+        filename = self.maybe_download('text8.zip', url, 31344016)
+        vocabulary = self.read_data(filename)
+        data, count, dictionary, reverse_dictionary = self.build_dataset(vocabulary, vocabulary_size)
+        del vocabulary  # Hint to reduce memory.
+        return data, count, dictionary, reverse_dictionary
 
     def _preprocess(self, message):
         """
         Clean up the bot message.
 
         :param message: str: Message read from the bot.
-        :return: list
+        :returns: list
         """
         punctuations = ".!?#$%"
         for c in punctuations:
@@ -82,34 +122,54 @@ class TensorFlowConnector(Connector):
         :type userinfo: None or list
         :param prediction: Prediction output by model.
         :type prediction: None or string
-        :return: str
+        :returns: str
         """
-        # Split message into three words
-        w0 = message[0]
-        w1 = message[1]
-        w2 = message[2]
 
-        # TODO: Resolve issue on how TensorFlow model is loaded.
-        
-        opts = Options()
-        # word2vec_optimized.word2vec = self.word2vec
-        with tf.Graph().as_default(), tf.Session(graph=tf.Graph()) as self.sess:
-            with tf.device("/cpu:0"):
-                # init = tf.global_variables_initializer()
-                saver = tf.train.Saver()
-                saver.restore(self.sess, self.model)
-                self.loaded_model = Word2VecWrapper(opts, self.sess)
-                prediction = self.loaded_model.analogy(w0, w1, w2)
-        
-        return prediction        
+        data, count, dictionary, reverse_dictionary = self.collect_data(vocabulary_size=self.vocab_size)
 
-        # joined_message = ' '.join(message)
-        # if 'cat' in joined_message:
-        #     prediction = 'kitten'
-        # else:
-        #     prediction = 'unknown'
-        #
-        # return prediction
+        input_word = message[-1]
+
+        # Reinitialize things
+        with self.graph.as_default():
+
+            # Input data.
+            train_inputs = tf.placeholder(tf.int32, shape=[self.batch_size])
+            train_context = tf.placeholder(tf.int32, shape=[self.batch_size, 1])
+            valid_dataset = tf.constant(self.valid_examples, dtype=tf.int32)
+
+            # Look up embeddings for inputs.
+            embeddings = tf.Variable(
+                tf.random_uniform([self.vocab_size, self.embedding_size], -1.0, 1.0))
+            embed = tf.nn.embedding_lookup(embeddings, train_inputs)
+
+            # Compute the cosine similarity between minibatch examples and all embeddings.
+            norm = tf.sqrt(tf.reduce_sum(tf.square(embeddings), 1, keep_dims=True))
+            normalized_embeddings = embeddings / norm
+            valid_embeddings = tf.nn.embedding_lookup(
+                normalized_embeddings, valid_dataset)
+            similarity = tf.matmul(
+                valid_embeddings, normalized_embeddings, transpose_b=True)
+
+            # Add variable initializer.
+            init = tf.global_variables_initializer()
+
+        with tf.Session(graph=self.graph) as session:
+            saver = tf.train.Saver()
+            saver.restore(session, self.model)
+
+            sim = similarity.eval()
+            if input_word in dictionary:
+                idx = dictionary[input_word]
+                valid_word = reverse_dictionary[idx]
+                top_k = 3  # number of nearest neighbors
+                nearest = (-sim[idx, :]).argsort()[1:top_k + 1]
+                log_str = 'nearest words to %s are' % valid_word
+                for k in range(top_k):
+                    close_word = reverse_dictionary[nearest[k]]
+                    log_str = '%s %s' % (log_str, close_word)
+                return log_str
+            else:
+                return 'no match'
 
     def _postprocess(self, prediction):
         """
@@ -118,7 +178,7 @@ class TensorFlowConnector(Connector):
         :param prediction: str: Tensorflow model prediction.
         :return: str
         """
-        if prediction != 'unknown':
-            return "I figured it out! The fourth word should be {}.".format(prediction)
+        if prediction != 'no match':
+            return "I figured it out! The {}.".format(prediction)
         else:
-            return "I'm sorry, I was unable to find an analogy with the words you provide. Please try again."
+            return "I'm sorry, I was unable to find any nearby words."
