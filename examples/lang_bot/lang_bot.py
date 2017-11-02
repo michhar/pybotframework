@@ -10,5 +10,5 @@ my_app = BotFramework(connectors=[sklearn_lang_conn])
 
 if __name__ == '__main__':
     """Created for the movie review dataset from scikit-learn tutorials
-     and from a model trained with a SGDClassifier"""
-    my_app.run_server(host='localhost', port=3978, debug=True)
+     and from a model trained with a SVM Classifier"""
+    my_app.run_server(host='0.0.0.0', port=3978, debug=True)

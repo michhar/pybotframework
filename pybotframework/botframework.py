@@ -88,7 +88,7 @@ class BotFramework(object):
 
         # TODO: Add config details here for flask app
         return {'OIDC_CLIENT_SECRETS': client_secrets_path,
-                'OIDC_SCOPES': ["https://api.botframework.com/.default"],
+                'OIDC_SCOPES': ["https://api.botframework.com/.default", "openid"],
                 'OIDC_RESOURCE_SERVER_ONLY': True}
 
     def handle_messages(self):
