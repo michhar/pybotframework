@@ -48,13 +48,16 @@ Requirements for Examples
 * Pybotframework library installed from repo (`python setup.py` or `pip install .`)
 * Docker (if macOS get https://docs.docker.com/docker-for-mac/install/ and if Windows get https://docs.docker.com/docker-for-windows/install/)
 * Ngrok https://ngrok.com/download
-* TensorFlow and Scikit-learn installed
+* TensorFlow (tensorflow==1.3.0) and Scikit-learn (scikit-learn==0.18.2) installed
 * Some knowledge of ML and neural nets (helpful)
 
 You will also need the following models and data:
 
-* Sentiment scikit-learn model - to download click here: [https://odsc2017.blob.core.windows.net/models/sentiment.pkl](https://odsc2017.blob.core.windows.net/models/sentiment.pkl)
-* TensorFlow word2vec model - to download click here: [https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip](https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip)
+* `Scikit-learn sentiment model`_ (click to download)
+    .. _`Scikit-learn sentiment model`: https://odsc2017.blob.core.windows.net/models/sentiment.pkl
+
+* `TensorFlow word2vec model`_ (click to download)
+    .. _`TensorFlow word2vec model`: https://odsc2017.blob.core.windows.net/models/tensorflow_word2vec_model.zip
 
 Docker Instructions
 ========
