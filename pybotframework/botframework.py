@@ -201,6 +201,7 @@ class BotFramework(object):
             self.auth_str = "{} {}".format(resp_data["token_type"],
                                            resp_data["access_token"])
         except KeyError:
+            print("Can't create auth string: {}".format(resp_data))
             self.auth_str = ""
 
     def send(self, service_url, channel_id, reply_to_id,
