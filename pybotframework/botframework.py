@@ -89,7 +89,8 @@ class BotFramework(object):
         # TODO: Add config details here for flask app
         return {'OIDC_CLIENT_SECRETS': client_secrets_path,
                 'OIDC_SCOPES': ["https://api.botframework.com/.default", "openid"],
-                'OIDC_RESOURCE_SERVER_ONLY': True}
+                'OIDC_RESOURCE_SERVER_ONLY': True,
+                'OIDC_INTROSPECTION_AUTH_METHOD': 'bearer'}
 
     def handle_messages(self):
         if flask.request.method == "POST":
