@@ -73,6 +73,7 @@ class BotFramework(object):
                 "client_secret": self.app_client_secret,
                 "redirect_uris": ["https://localhost:8080/oidc_callback"],
                 "token_uri": "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token",
+                "token_introspection_uri": "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token",
                 "auth_uri": "https://login.botframework.com/v1/.well-known/openidconfiguration",
                 "userinfo_uri": "https://login.botframework.com/v1/.well-known/openidconfiguration",
                 "issuer": "https://api.botframework.com",
