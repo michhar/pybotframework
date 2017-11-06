@@ -37,10 +37,13 @@ class Memory:
                 "Content-Type": "application/json"
             }
         )
-        json_data = response.json()
-        self.data = json_data.get('data', [])
-        self.etag = json_data.get('eTag')
-        return self.data
+        try:
+            json_data = response.json()
+            self.data = json_data.get('data', [])
+            self.etag = json_data.get('eTag')
+            return self.data
+        except:
+            return None
 
     def get_url(self):
         return None

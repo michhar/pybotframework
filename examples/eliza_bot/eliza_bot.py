@@ -2,7 +2,7 @@ import os
 from pybotframework.botframework import BotFramework
 from pybotframework.regex_connector import RegexConnector
 
-#os.chdir(os.path.dirname(__file__))
+# os.chdir(os.path.dirname(__file__))
 
 regex_conn = RegexConnector(intent_file='regex.json', response_file='responses.json')
 
