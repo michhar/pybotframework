@@ -270,7 +270,7 @@ class BotFramework(object):
             data["channelId"],
             general_id,
             {"id": sender_id, "name": member_added},
-            {"id": data["from"]},
+            {"id": data["from"]['id']},
             result,
             "message",
             data["conversation"])
