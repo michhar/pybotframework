@@ -7,8 +7,8 @@ Deploying Your Bot
 Prerequisites
 =============
 
-- Account on Docker Hub
-- Azure subscription
+- Account on Docker Hub (Sign up at `https://hub.docker.com/ <https://hub.docker.com/>`_)
+- Azure subscription (Sign up at `https://azure.microsoft.com/en-us/free/ <https://azure.microsoft.com/en-us/free/>`_)
 
 Instructions
 ============
@@ -18,32 +18,32 @@ Linux Web App
 
 1.  From Azure Portal (`portal.azure.com <https://portal.azure.com>`_) spin up a Linux Web App
 2.  Log in to Docker locally (``docker login`` and enter your credentials for Docker Hub)
-3.  Build the docker image from the bot's Dockerfile (you can name the image anything you wish):
+3.  Build the docker image from the bot's Dockerfile (you can name the image anything you wish, here it's ``flaskbot``).  For example:
 
 .. code-block:: text
 
     docker build -f Dockerfile -t flaskbot:latest .
     docker images
 
-4.  Tag the image with the Docker Hub username (here, dockeruser) and tag:
+4.  Tag the image with the Docker Hub username (replace <dockeruser> with your docker user name and give the image name) and tag:
 
 .. code-block:: text
 
-    docker tag <image id> dockeruser/flaskbot
+    docker tag <image id> <dockeruser>/flaskbot
 
 5.  Push up the docker image to Docker Hub (takes some time):
 
 .. code-block:: text
 
     docker login
-    docker push dockeruser/flaskbot
+    docker push <dockeruser>/flaskbot
 
-6.  Specify the docker image to the Linux Web App (give the app a name, resource group and point to the image):
+6.  Specify the docker image to the Linux Web App (give the app a name, replacing <mybotname>, resource group, replacing <mybotrg>, and point to the image):
 
 .. code-block:: text
 
     az login
-    az webapp config container set --name mybotname --resource-group mybotrg --docker-registry-server-url dockeruser/flaskbot
+    az webapp config container set --name <mybotname> --resource-group <mybotrg> --docker-registry-server-url <dockeruser>/flaskbot
 
 6.  Navigate to portal and click on Docker Container in left panel to ensure the app is pulling in the correct image from Docker Hub.
 
