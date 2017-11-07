@@ -73,6 +73,7 @@ class BotFramework(object):
                 "client_secret": self.app_client_secret,
                 "redirect_uris": ["https://localhost:8080/oidc_callback"],
                 "token_uri": "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token",
+                "token_introspection_uri": "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token",
                 "auth_uri": "https://login.botframework.com/v1/.well-known/openidconfiguration",
                 "userinfo_uri": "https://login.botframework.com/v1/.well-known/openidconfiguration",
                 "issuer": "https://api.botframework.com",
@@ -89,7 +90,8 @@ class BotFramework(object):
         # TODO: Add config details here for flask app
         return {'OIDC_CLIENT_SECRETS': client_secrets_path,
                 'OIDC_SCOPES': ["https://api.botframework.com/.default", "openid"],
-                'OIDC_RESOURCE_SERVER_ONLY': True}
+                'OIDC_RESOURCE_SERVER_ONLY': True,
+                'OIDC_INTROSPECTION_AUTH_METHOD': 'bearer'}
 
     def handle_messages(self):
         if flask.request.method == "POST":
@@ -199,6 +201,7 @@ class BotFramework(object):
             self.auth_str = "{} {}".format(resp_data["token_type"],
                                            resp_data["access_token"])
         except KeyError:
+            print("Can't create auth string: {}".format(resp_data))
             self.auth_str = ""
 
     def send(self, service_url, channel_id, reply_to_id,
@@ -267,7 +270,7 @@ class BotFramework(object):
             data["channelId"],
             general_id,
             {"id": sender_id, "name": member_added},
-            {"id": data["from"]},
+            {"id": data["from"]['id']},
             result,
             "message",
             data["conversation"])
