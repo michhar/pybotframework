@@ -14,6 +14,7 @@ User Guide
 
    user/intro
    user/tutorial
+   user/deployment
 
 
 API Documentation
