@@ -35,7 +35,7 @@ Setup
 =====
 
 * Download the Bot Framework Emulator for local testing (https://github.com/Microsoft/BotFramework-Emulator#download) - multiple OS compatibility.
-(For a full list of prerequisites see the main Readme on this repo :any:`../../Readme.rst`).
+(For a full list of prerequisites see the main Readme on the repo `here <https://github.com/michhar/pybotframework#requirements-for-examples>`_).
 
 Run the Bot
 ===========
