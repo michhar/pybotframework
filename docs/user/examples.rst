@@ -29,13 +29,13 @@ Bots Available
 Running the Bots
 ****************
 
-This example is a Regex python bot using the [Flask microframework](http://flask.pocoo.org/) to work with the Bot Framework on Azure or even just locally with the Bot Framework Emulator (recommended to use for testing and dev).
+This example is a Regex python bot using the `Flask microframework <http://flask.pocoo.org/>`_ to work with the Bot Framework on Azure or even just locally with the Bot Framework Emulator (recommended to use for testing and dev).
 
 Setup
 =====
 
 * Download the Bot Framework Emulator for local testing (https://github.com/Microsoft/BotFramework-Emulator#download) - multiple OS compatibility.
-(For a full list of prerequisites see the main Readme on this repo `here <../../Readmed.rst>`_).
+(For a full list of prerequisites see the main Readme on this repo :any:`../../Readme.rst`).
 
 Run the Bot
 ===========
@@ -54,10 +54,17 @@ Test Locally in Emulator
 ========================
 
 1. Open up the BF Emulator (usually called `botframework-emulator` on your system)
-* Click on the "Enter your endpoint URL" and select or type in `http://localhost:3978/api/messages`
-* Leave the "Microsoft App ID" and "Microsoft App Password" blank
-* Click "CONNECT"
+2. Click on the "Enter your endpoint URL" and select or type in `http://localhost:3978/api/messages`
+3. Leave the "Microsoft App ID" and "Microsoft App Password" blank
+4. Click "CONNECT"
 
 You should see in the Log window a "conversationUpdate" appear twice with no errors.  If there's an error ensure you have the `<bot script name>.py` script running on the command line.
+
+Happy chatting!
+
+Deployment
+==========
+
+Go to `Deployment <http://pybotframework.readthedocs.io/en/latest/user/deployment.html>`_ for deploy instructions.
 
 
