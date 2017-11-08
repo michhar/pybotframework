@@ -52,6 +52,10 @@ class TensorFlowConnector(Connector):
         if not os.path.exists(filename):
             filename, _ = urllib.request.urlretrieve(url + filename, filename)
         statinfo = os.stat(filename)
+        # print('url + filename: {}'.format(url + filename))
+        # print('expected_bytes: {}'.format(expected_bytes))
+        # print('statinfo: {}'.format(statinfo))
+        # print('statinfo.st_size: {}'.format(statinfo.st_size))
         if statinfo.st_size == expected_bytes:
             pass
         else:
