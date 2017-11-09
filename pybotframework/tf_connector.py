@@ -16,10 +16,7 @@ class TensorFlowConnector(Connector):
 
     def __init__(self, model_file):
         Connector.__init__(self)
-        self.model_path = '/'.join(os.getcwd().split('/')[0:-2])+'/examples/tf_bot/data'
-        if len(os.getcwd().split('/')) == 1:
-            self.model_path = '\''.join(os.getcwd().split('\'')[0:-2]) + '/examples/tf_bot/data'
-        self.model = os.path.join(self.model_path, model_file)
+        self.model = model_file
         self.sess = None
         self.graph = tf.Graph()
         self.vocab_size = 10000
