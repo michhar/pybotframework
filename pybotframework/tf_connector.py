@@ -49,10 +49,6 @@ class TensorFlowConnector(Connector):
         if not os.path.exists(filename):
             filename, _ = urllib.request.urlretrieve(url + filename, filename)
         statinfo = os.stat(filename)
-        # print('url + filename: {}'.format(url + filename))
-        # print('expected_bytes: {}'.format(expected_bytes))
-        # print('statinfo: {}'.format(statinfo))
-        # print('statinfo.st_size: {}'.format(statinfo.st_size))
         if statinfo.st_size == expected_bytes:
             pass
         else:
@@ -128,6 +124,7 @@ class TensorFlowConnector(Connector):
 
         data, count, dictionary, reverse_dictionary = self.collect_data(vocabulary_size=self.vocab_size)
 
+        # Only take the last word in the message and pass to TensorFlow model
         input_word = message[-1]
 
         # Reinitialize things
