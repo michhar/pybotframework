@@ -32,6 +32,7 @@ class BotFramework(object):
         self.app_client_secret = app_client_secret or \
             os.environ.get('APP_PASSWORD', '')
         self.auth_str = None
+        self.user_memory = None
 
         # allow users to supply their own flask server
         if server is not None:
@@ -129,14 +130,18 @@ class BotFramework(object):
             self.respond_to_client(data, intent=intent)
 
     def begin_dialog(self, data):
-        self.members_added = data["membersAdded"]
-        member_added = self.members_added[0]["name"]
+        # Save data to memory and return memory object
+        self.user_memory = self.get_user_memory(data)
+
+        # Deal with member data
+        member_added = self.user_memory.members_added[0]["name"]
         from_id = data["from"]["id"]
         general_id = data["id"]
         sender_id = data["recipient"]["id"]
 
+        # Indicate who has been added to conversation
         message = ''
-        for member in self.members_added:
+        for member in self.user_memory.members_added:
             message += '{} added!'.format(member["name"])
 
         self.send(
@@ -149,7 +154,7 @@ class BotFramework(object):
             "message",
             data["conversation"])
 
-    def process_message(self, message, intent=None, memory=None, conn_itr=None,
+    def process_message(self, message, intent=None, conn_itr=None,
                         *args, **kwargs):
         message = message.rstrip(".! \n\t")
 
@@ -183,7 +188,7 @@ class BotFramework(object):
         else:
             response_message = data
 
-        memory.append([message, response_message])
+        self.user_memory.append([message, response_message])
         return response_message
 
     def get_auth_str(self):
@@ -245,25 +250,29 @@ class BotFramework(object):
         user_id = data["from"]["id"]
         channel_id = data["channelId"]
         base_url = data["serviceUrl"]
+        members_added = data["membersAdded"]
         if not self.auth_str:
             self.get_auth_str()
-        user_mem = UserMemory(self.session, user_id, channel_id,
-                              self.auth_str, base_url=base_url)
+        user_mem = UserMemory(session=self.session,
+                              user_id=user_id,
+                              channel_id=channel_id,
+                              auth_str=self.auth_str,
+                              members_added=members_added,
+                              base_url=base_url)
         return user_mem
 
     def respond_to_client(self, data, *args, **kwargs):
-        member_added = self.members_added[0]["name"]
         general_id = data["id"]
         message = data["text"]
         sender_id = data["recipient"]["id"]
 
-        memory = self.get_user_memory(data)
+        # Get the name of the user
+        member_added = self.user_memory.members_added[0]["name"]
 
         # If there's a LUIS intent involved send off to LUISBot method
         intent = kwargs['intent']
 
-        result = self.process_message(message=message, intent=intent,
-                                      memory=memory)
+        result = self.process_message(message=message, intent=intent)
 
         self.send(
             data["serviceUrl"],

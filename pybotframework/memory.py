@@ -51,7 +51,8 @@ class Memory:
 
 class UserMemory(Memory):
     """UserMemory holds the logic for working with user data."""
-    def __init__(self, session, user_id, channel_id, auth_str, base_url):
+    def __init__(self, session, user_id, channel_id, auth_str, members_added,
+                 base_url):
         """
         Data can be any format for how you want to save.
         Lists or dictionaries are recommended so you can save multiple
@@ -60,6 +61,7 @@ class UserMemory(Memory):
         super(UserMemory, self).__init__(session, channel_id, auth_str,
                                          base_url)
         self.user_id = user_id
+        self.members_added = members_added
         self.get_data()
 
     def get_url(self):
