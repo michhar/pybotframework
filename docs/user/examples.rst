@@ -20,10 +20,10 @@ Bots Available
 | Microsoft LUIS bot                            | LUIS Cognitive Service                        | `Link 4`_                                     |
 +-----------------------------------------------+-----------------------------------------------+-----------------------------------------------+
 
-.. _Link 1: https://github.com/michhar/pybotframework/blob/master/examples/eliza_bot
-.. _Link 2: https://github.com/michhar/pybotframework/blob/master/examples/lang_bot
-.. _Link 3: https://github.com/michhar/pybotframework/blob/master/examples/tf_bot
-.. _Link 4: https://github.com/michhar/pybotframework/blob/master/examples/luis_bot
+.. _Link 1: ../../../examples/eliza_bot
+.. _Link 2: ../../../examples/lang_bot
+.. _Link 3: ../../../examples/tf_bot
+.. _Link 4: ../../../examples/luis_bot
 
 ****************
 Running the Bots
@@ -59,8 +59,6 @@ Test Locally in Emulator
 4. Click "CONNECT"
 
 You should see in the Log window a "conversationUpdate" appear twice with no errors.  If there's an error ensure you have the `<bot script name>.py` script running on the command line.
-
-Happy chatting!
 
 Deployment
 ==========
