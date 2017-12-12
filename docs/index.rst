@@ -14,6 +14,7 @@ User Guide
 
    user/intro
    user/tutorial
+   user/examples
    user/deployment
 
 
