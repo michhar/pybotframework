@@ -20,7 +20,12 @@ class BotStateMachine(object):
 
 
 class BotStateData(object):
-    def __init__(self, user_message,
+    """
+    Should we have a list of connectors for each state?
+    """
+
+    def __init__(self,
+                 user_message,
                  intent=None,
                  entities=[],
                  bot_messages=[],
